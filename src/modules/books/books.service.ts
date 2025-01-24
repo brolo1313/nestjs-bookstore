@@ -2,19 +2,22 @@ import { CreateBookDto } from './dto/create-book.dto';
 import { Injectable } from '@nestjs/common';
 import { BooksRepository } from './books.repository';
 import { Book } from './books.entity';
+import { LogMethod } from 'src/core/decorators/logger.decorator';
 
 @Injectable()
 export class BooksService {
  constructor(private readonly booksRepository: BooksRepository) {}
-
+ @LogMethod
  async getAllBooks(): Promise<Book[]> {
   return this.booksRepository.findAll();
  }
 
+ @LogMethod
  async getBookById(id: number): Promise<Book> {
   return this.booksRepository.findOneOrNotFoundFail(id);
  }
 
+ @LogMethod
  async createBook(dto: CreateBookDto): Promise<void> {
   const book = new Book();
   book.title = dto.title;

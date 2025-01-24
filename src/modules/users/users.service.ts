@@ -3,10 +3,11 @@ import { User } from './user.entity';
 import { UsersRepository } from './users.repository';
 import { RegisterUserDto } from './dto/register-user.dto';
 import bcrypt from 'bcrypt';
+import { LogMethod } from 'src/core/decorators/logger.decorator';
 
 @Injectable()
 export class UsersService {
-  constructor(private usersRepository: UsersRepository) {}
+  constructor(private usersRepository: UsersRepository) { }
   async registerUser(dto: RegisterUserDto): Promise<number> {
     const passwordHash = await bcrypt.hash(dto.password, 10);
     const user = new User();
@@ -20,6 +21,7 @@ export class UsersService {
     return createdUser.id;
   }
 
+  @LogMethod
   getAllUsers() {
     return this.usersRepository.findAll();
   }
