@@ -34,12 +34,12 @@ export class BooksController {
 
     @Put(':id')
     async updateBook(@Param('id') id: number, @Body() bookDto: any) {
-        // const result = await this.booksService.updateBook(id, bookDto);
+        const result = await this.booksService.updateBookById(id, bookDto);
+        return result;
     }
 
-    // Удалить книгу
     @Delete(':id')
     async deleteBook(@Param('id') id: number) {
-        // const result = await this.booksService.deleteBook(id);
+        const result = await this.booksService.deleteBookById(id);
     }
 }
