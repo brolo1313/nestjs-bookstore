@@ -1,11 +1,13 @@
 import { UsersRepository } from './../users/users.repository';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { access } from 'fs';
 
 @Injectable()
 export class AuthService {
-    constructor(private usersRepository: UsersRepository) { }
-    async validateUser(email: string, password: string): Promise<{userId: number}> {
+    constructor(private usersRepository: UsersRepository, private jwtService: JwtService) { }
+    async validateUser(email: string, password: string): Promise<{ userId: number }> {
         const user = await this.usersRepository.findByEmail(email);
 
         if (!user) {
@@ -23,9 +25,12 @@ export class AuthService {
         }
     }
 
-    async login(dto: { email: string; password: string }) {
-        const user = await this.validateUser(dto.email, dto.password);
+    async login(userId: number) {
+        const token = this.jwtService.sign({ userId });
 
-        return user;
+        return {
+            accessToken: token,
+            userId: userId
+        };
     }
 }

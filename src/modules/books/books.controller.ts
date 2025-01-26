@@ -7,8 +7,10 @@ import {
     Param,
     Post,
     Put,
+    UseGuards,
 } from '@nestjs/common';
 import { BooksService } from './books.service';
+import { JwtAuthGuard } from 'src/core/guards/jwt-auth-guard';
 
 @Controller('books')
 export class BooksController {
@@ -26,6 +28,7 @@ export class BooksController {
         return result
     }
 
+    @UseGuards(JwtAuthGuard)
     @Post()
     async createBook(@Body() bookDto: CreateBookDto) {
         const result = await this.booksService.createBook(bookDto);
