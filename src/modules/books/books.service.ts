@@ -20,22 +20,13 @@ export class BooksService {
 
     @LogMethod
     async createBook(dto: CreateBookDto, userId: number) {
-        console.log('userId', userId);
         const user = await this.usersRepository.findByIdOrNotFoundFail(userId);
+        
+        const newBook = Book.createBook(dto, user.id, user.age);
 
-        if (user.age < 18 && dto.ageRestriction >= 18) {
-            throw new ForbiddenException('User is under 18');
-        }
+        const resultFromBd = await this.booksRepository.save(newBook);
 
-        const book = new Book();
-        book.title = dto.title;
-        book.ageRestriction = dto.ageRestriction;
-        book.author = dto.author;
-        book.ownerId = userId;
-
-        const result = await this.booksRepository.save(book);
-
-        return result;
+        return resultFromBd;
     }
 
     @LogMethod
