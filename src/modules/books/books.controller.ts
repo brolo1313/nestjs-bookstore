@@ -1,4 +1,4 @@
-import { CreateBookDto } from './dto/create-book.dto';
+import { BookDto } from './dto/book.dto';
 import {
     Body,
     Controller,
@@ -33,21 +33,21 @@ export class BooksController {
 
     @UseGuards(JwtAuthGuard)
     @Post()
-    async createBook(@Body() bookDto: CreateBookDto, @Request() req : any) {
+    async createBook(@Body() bookDto: BookDto, @Request() req : any) {
         const result = await this.booksService.createBook(bookDto, req.user.userId);
         return result
     }
 
     @UseGuards(JwtAuthGuard)
     @Put(':id')
-    async updateBook(@Param('id') id: number, @Body() bookDto: any) {
-        const result = await this.booksService.updateBookById(id, bookDto);
+    async updateBook(@Param('id') id: number,  @Request() req : any,  @Body() bookDto: any) {
+        const result = await this.booksService.updateBookById( req.user.userId, id, bookDto);
         return result;
     }
 
     @UseGuards(JwtAuthGuard)
     @Delete(':id')
-    async deleteBook(@Param('id') id: number) {
-        const result = await this.booksService.deleteBookById(id);
+    async deleteBook(@Param('id') bookId: number) {
+        await this.booksService.deleteBookById(bookId);
     }
 }

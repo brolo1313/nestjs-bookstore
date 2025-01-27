@@ -28,7 +28,8 @@ export class BooksRepository {
     return result;
   }
 
-  async remove(id: number): Promise<void> {
-    await this.booksORMRepository.delete(id);
+  async remove(id: number): Promise<any> {
+    const result =  await this.booksORMRepository.delete(id);
+    return result;
   }
 }
