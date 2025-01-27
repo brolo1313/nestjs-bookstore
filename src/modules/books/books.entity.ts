@@ -10,10 +10,10 @@ export class Book extends BaseEntity {
     author: string;
 
     @Column()
-    ageRestriction: number; //возрастные ограничения на книгу
+    ageRestriction: number;
 
     @Column({ nullable: true })
-    ownerId: number; //id пользователя, который добавил книгу
+    ownerId: number;
 
     @Column({ nullable: true })
     image?: string;
